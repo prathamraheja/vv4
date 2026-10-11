@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nobody Wants Us ♡</title>
+<style>
+  :root { --rose:#f05f91; --rose-dark:#d94379; --ink:#4b3041; --muted:#987487; --paper:#fff8fc; --pink:#ffe5f0; --line:#f6c5dc; --lilac:#f0e7ff; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; min-height:100vh; color:var(--ink);
+    font-family: ui-rounded, "Trebuchet MS", system-ui, -apple-system, sans-serif;
+    background: radial-gradient(ellipse at 10% 8%,#ffddeb 0,transparent 34%),
+                radial-gradient(ellipse at 92% 42%,#e9e2ff 0,transparent 32%),
+                radial-gradient(ellipse at 20% 92%,#fff0c9 0,transparent 32%),var(--paper);
+    overflow-x:hidden;
+  }
+  .wrap { width:min(760px,92vw); margin:0 auto; padding:28px 0 70px; position:relative; z-index:1; }
+  .floaties { position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
+  .floaty { position:absolute; bottom:-50px; opacity:0; animation:drift linear infinite; filter:drop-shadow(0 3px 4px #ef9fbe30); }
+  @keyframes drift { 0%{transform:translateY(0) rotate(0deg);opacity:0} 10%{opacity:.65} 85%{opacity:.55} 100%{transform:translateY(-115vh) rotate(28deg);opacity:0} }
+  .sparkle { display:inline-block; animation:twinkle 1.8s ease-in-out infinite; }
+  @keyframes twinkle { 0%,100%{transform:scale(.8) rotate(-8deg);opacity:.55} 50%{transform:scale(1.2) rotate(12deg);opacity:1} }
+  .topline { text-align:center; color:var(--rose); letter-spacing:.18em; text-transform:uppercase; font-size:.72rem; font-weight:800; }
+  header { text-align:center; padding:24px 8px 26px; }
+  .heart { font-size:2rem; animation:float 2.5s ease-in-out infinite; display:inline-block; }
+  h1 { font-family:Georgia,serif; font-size:clamp(2.4rem,8vw,4.7rem); line-height:.98; letter-spacing:-.05em; margin:12px 0; font-weight:600; }
+  h1 span { color:var(--rose); font-style:italic; }
+  .subtitle { max-width:480px; margin:14px auto 0; color:var(--muted); line-height:1.7; font-size:1rem; }
+  .card { background:rgba(255,255,255,.88); border:1.5px solid var(--line); border-radius:30px; padding:clamp(22px,5vw,38px); box-shadow:0 18px 50px rgba(156,72,101,.10); backdrop-filter:blur(10px); }
+  .question-card { animation:popIn .55s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes popIn { from{opacity:0;transform:translateY(26px) scale(.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+  .step-dots { display:flex; justify-content:center; gap:8px; margin:0 0 22px; }
+  .step-dot { width:9px;height:9px;border-radius:50%;background:#f7d7e5;transition:all .3s ease; }
+  .step-dot.done { background:var(--rose); box-shadow:0 0 0 4px #fce4ee; }
+  .step-dot.current { background:#b49aff; transform:scale(1.35); }
+  .progress-top { display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:.84rem; color:var(--muted); margin-bottom:10px; }
+  .track { height:7px; background:#f8e5eb; border-radius:20px; overflow:hidden; margin-bottom:27px; }
+  .bar { height:100%; width:0%; background:linear-gradient(90deg,#e99ab1,var(--rose)); border-radius:20px; transition:width .35s ease; }
+  .eyebrow { text-transform:uppercase; letter-spacing:.13em; font-size:.72rem; font-weight:800; color:var(--rose); margin-bottom:10px; }
+  h2 { font-family:Georgia,serif; font-size:clamp(1.45rem,4vw,2rem); line-height:1.25; font-weight:500; margin:0 0 12px; }
+  .hint { color:var(--muted); font-size:.94rem; line-height:1.6; margin:0 0 22px; }
+  .answers { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  button { font:inherit; cursor:pointer; border:0; transition:transform .15s, background .15s, border-color .15s; }
+  .answer { padding:16px 14px; border-radius:18px; color:var(--ink); background:linear-gradient(135deg,#fff8fb,#fff); border:1.5px solid var(--line); font-weight:750; box-shadow:0 5px 0 #f8dce8; }
+  .answer:hover { background:var(--pink); transform:translateY(-3px) rotate(-.5deg); border-color:#e7a5b8; box-shadow:0 8px 0 #f4c9da; }
+  .answer:active { transform:translateY(1px);box-shadow:0 2px 0 #f4c9da; }
+  .answer:focus-visible, .primary:focus-visible, a:focus-visible { outline:3px solid #d36c8b; outline-offset:3px; }
+  .feedback { min-height:28px; margin-top:16px; font-size:.92rem; color:var(--rose-dark); font-weight:650; }
+  .primary { display:inline-flex; align-items:center; justify-content:center; gap:8px; background:var(--rose); color:white; padding:14px 20px; border-radius:999px; font-weight:800; text-decoration:none; box-shadow:0 8px 20px rgba(201,79,112,.22); }
+  .primary:hover { background:var(--rose-dark); transform:translateY(-1px); }
+  .hidden { display:none !important; }
+  .unlock { margin-top:28px; text-align:center; padding:clamp(25px,5vw,40px); border:1.5px dashed #e4a2b5; background:linear-gradient(135deg,#fff0f6,#f7f1ff,#fffdfb); border-radius:30px; animation:popIn .8s cubic-bezier(.2,.8,.2,1) both; }
+  .envelope { display:inline-block; font-size:3rem; animation:bob 2s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{transform:translateY(0) rotate(-4deg)} 50%{transform:translateY(-8px) rotate(4deg)} }
+  .confetti { position:fixed; z-index:5; top:-20px; pointer-events:none; animation:confettiFall 2.8s ease-in forwards; }
+  @keyframes confettiFall { to{transform:translateY(110vh) rotate(720deg);opacity:0} }
+  .unlock .bigheart { font-size:2.5rem; }
+  .unlock h2 { margin-top:8px; }
+  .unlock p { color:var(--muted); line-height:1.75; max-width:500px; margin:12px auto 22px; }
+  .note { margin-top:18px; color:#a18490; font-size:.78rem; }
+  footer { text-align:center; color:#a18490; font-size:.8rem; padding:24px 10px 0; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+  @media(max-width:420px) { .answers{grid-template-columns:1fr;} .card{border-radius:22px;} }
+  @media(prefers-reduced-motion:reduce) { *,*::before,*::after{animation:none!important;scroll-behavior:auto!important;transition:none!important;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="floaties" id="floaties" aria-hidden="true"></div>
+  <div class="topline"><span class="sparkle">✧</span> a tiny something, just for you <span class="sparkle">✧</span></div>
+  <header>
+    <div class="heart">💗</div>
+    <h1>Nobody Wants <span>Us</span></h1>
+    <p class="subtitle">A little quiz for my favourite person. Get all seven right and there's something waiting for you at the end. No pressure, just vibes. ♡</p>
+  </header>
+
+  <main>
+    <section class="card question-card" id="quiz" aria-live="polite">
+      <div class="step-dots" id="step-dots" aria-label="Quiz progress"></div>
+      <div class="progress-top"><span id="progress-label">Question 1 of 7</span><span id="score-label">♡ 0 unlocked</span></div>
+      <div class="track"><div class="bar" id="bar"></div></div>
+      <div class="eyebrow" id="category">a little us question</div>
+      <h2 id="question">Who is this tiny love letter made for?</h2>
+      <p class="hint" id="hint">Easy one. Think of the person reading this right now.</p>
+      <div class="answers" id="answers"></div>
+      <div class="feedback" id="feedback" role="status"></div>
+    </section>
+
+    <section class="unlock hidden" id="reveal">
+      <div class="envelope">💌</div>
+      <div class="eyebrow">you unlocked the last little thing</div>
+      <h2>Plot twist: you're my favourite story. ♡</h2>
+      <p>I know you've been loving <em>Nobody Wants This</em> and all its songs, so I made you THE playlist as i do for every series you love. If today feels a bit heavy, I hope this makes it softer. We can listen together whenever you want. I LOVE YOU SO MUCH BEBI MWAH 💗</p>
+      <a class="primary" id="playlist-link" href="https://open.spotify.com/" target="_blank" rel="noopener noreferrer">🎧 Open our playlist</a>
+      <div class="note">made with love, exclusively for you ♡</div>
+    </section>
+  </main>
+  <footer>in a world full of episodes, you're my favourite plotline ♡</footer>
+</div>
+
+<script>
+  // Before sharing, replace PLAYLIST_URL below with your actual Spotify playlist link.
+  const PLAYLIST_URL = "https://open.spotify.com/playlist/13CtUrmOrurNzMnOp9MADm?si=e38ef7ef097140df&pt=c832ac0a68c1e89cdd776d395859d5b1";
+
+  const questions = [
+    {
+      type: "a little us question",
+      text: "Who did I make this little surprise for?",
+      hint: "Answer from your point of view, love. ♡",
+      options: ["You", "Me"],
+      correct: "Me",
+      right: "Yes, YOU! This whole little surprise is for you. ♡",
+      wrong: "Hehe, answer as yourself: who is this surprise for?"
+    },
+    {
+      type: "one more us question",
+      text: "And who made this website for you?",
+      hint: "Still answering from your point of view. 👀",
+      options: ["You", "Me"],
+      correct: "You",
+      right: "That's me, your favourite little website-maker. And I adore you. 💗",
+      wrong: "Not quite, love. You're the one taking the quiz — who made it for you?"
+    },
+    {
+      type: "nobody wants this · trivia",
+      text: "What's the name of Joanne's sister?",
+      hint: "She's outspoken, close to Joanne, and played by Justine Lupe.",
+      options: ["Morgan", "Megan"],
+      correct: "Morgan",
+      right: "Yes! Morgan, queen of the commentary. ✨",
+      wrong: "Close! Try the other name."
+    },
+    {
+      type: "nobody wants this · trivia",
+      text: "Who plays Joanne?",
+      hint: "She's also known for playing Eleanor Shellstrop in The Good Place.",
+      options: ["Kristen Bell", "Kristen Stewart"],
+      correct: "Kristen Bell",
+      right: "Correct! Kristen Bell plays Joanne. 🎬",
+      wrong: "Not that Kristen — have another go!"
+    },
+    {
+      type: "nobody wants this · trivia",
+      text: "Who plays Noah?",
+      hint: "He's the actor who also starred in The O.C.",
+      options: ["Adam Brody", "Andrew Garfield"],
+      correct: "Adam Brody",
+      right: "That's him! Adam Brody plays Noah. 💫",
+      wrong: "Nope, try the other actor!"
+    },
+    {
+      type: "nobody wants this · trivia",
+      text: "What is the name of the series you're obsessed with?",
+      hint: "You know this one. It's literally the title of this page, hehe.",
+      options: ["Nobody Wants This", "Nobody Knows Us"],
+      correct: "Nobody Wants This",
+      right: "Obviouslyyy. Your obsession is officially verified. 🎀",
+      wrong: "Look at the giant title at the top, silly. Try again!"
+    },
+    {
+      type: "the most important question",
+      text: "If I got to choose my person in every version of this story, who would I choose?",
+      hint: "One word. You already know. ♡",
+      options: ["You", "Me"],
+      correct: "You",
+      right: "Always you. Now scroll a little, my love. There's one last thing. 💌",
+      wrong: "I'll give you a hint: it's the person this whole surprise was made for. ♡"
+    }
+  ];
+
+  let current = 0;
+  const progressLabel = document.getElementById("progress-label");
+  const dots = document.getElementById("step-dots");
+  const scoreLabel = document.getElementById("score-label");
+  const bar = document.getElementById("bar");
+  const category = document.getElementById("category");
+  const questionText = document.getElementById("question");
+  const hint = document.getElementById("hint");
+  const answers = document.getElementById("answers");
+  const feedback = document.getElementById("feedback");
+  const quiz = document.getElementById("quiz");
+  const reveal = document.getElementById("reveal");
+  const playlistLink = document.getElementById("playlist-link");
+
+  playlistLink.href = PLAYLIST_URL;
+
+  function renderQuestion() {
+    const q = questions[current];
+    const oldScrollY = window.scrollY;
+    quiz.classList.remove("question-card");
+    void quiz.offsetWidth;
+    quiz.classList.add("question-card");
+    dots.innerHTML = "";
+    questions.forEach((_, index) => {
+      const dot = document.createElement("span");
+      dot.className = "step-dot" + (index < current ? " done" : index === current ? " current" : "");
+      dots.appendChild(dot);
+    });
+    progressLabel.textContent = `Question ${current + 1} of ${questions.length}`;
+    scoreLabel.textContent = `♡ ${current} unlocked`;
+    bar.style.width = `${(current / questions.length) * 100}%`;
+    category.textContent = q.type;
+    questionText.textContent = q.text;
+    hint.textContent = q.hint;
+    feedback.textContent = "";
+    answers.innerHTML = "";
+    q.options.forEach(option => {
+      const button = document.createElement("button");
+      button.className = "answer";
+      button.type = "button";
+      button.textContent = option;
+      button.addEventListener("click", () => chooseAnswer(option));
+      answers.appendChild(button);
+    });
+  }
+
+  function chooseAnswer(option) {
+    const q = questions[current];
+    if (option !== q.correct) {
+      feedback.textContent = q.wrong;
+      return;
+    }
+    feedback.textContent = q.right;
+    [...answers.querySelectorAll("button")].forEach(button => button.disabled = true);
+    if (current < questions.length - 1) {
+      const next = document.createElement("button");
+      next.className = "primary";
+      next.type = "button";
+      next.style.marginTop = "8px";
+      next.textContent = "Unlock the next question ♡";
+      next.addEventListener("click", () => {
+        current++;
+        renderQuestion();
+        window.scrollBy({top: Math.max(220, Math.round(window.innerHeight * 0.45)), behavior:"smooth"});
+        setTimeout(() => quiz.scrollIntoView({behavior:"smooth", block:"start"}), 120);
+      });
+      answers.appendChild(next);
+      scoreLabel.textContent = `♡ ${current + 1} unlocked`;
+      bar.style.width = `${((current + 1) / questions.length) * 100}%`;
+    } else {
+      scoreLabel.textContent = "♡ all 7 unlocked";
+      bar.style.width = "100%";
+      const finish = document.createElement("button");
+      finish.className = "primary";
+      finish.type = "button";
+      finish.style.marginTop = "8px";
+      finish.textContent = "Reveal my surprise ♡";
+      finish.addEventListener("click", () => {
+        quiz.classList.add("hidden");
+        reveal.classList.remove("hidden");
+        showerConfetti();
+        setTimeout(() => reveal.scrollIntoView({behavior:"smooth", block:"center"}), 80);
+      });
+      answers.appendChild(finish);
+    }
+  }
+
+  // Gentle floating hearts, sparkles, and flowers in the background.
+  const floaties = document.getElementById("floaties");
+  const floatyIcons = ["♡","♥","✧","🌸","💗","✨"];
+  for (let i = 0; i < 20; i++) {
+    const el = document.createElement("span");
+    el.className = "floaty";
+    el.textContent = floatyIcons[i % floatyIcons.length];
+    el.style.left = (Math.random() * 100) + "%";
+    el.style.fontSize = (14 + Math.random() * 18) + "px";
+    el.style.animationDuration = (10 + Math.random() * 13) + "s";
+    el.style.animationDelay = (-Math.random() * 22) + "s";
+    floaties.appendChild(el);
+  }
+
+  function showerConfetti() {
+    const bits = ["💗","💖","💕","✨","🌸","♡"];
+    for (let i = 0; i < 42; i++) {
+      const bit = document.createElement("span");
+      bit.className = "confetti";
+      bit.textContent = bits[Math.floor(Math.random() * bits.length)];
+      bit.style.left = Math.random() * 100 + "vw";
+      bit.style.fontSize = (14 + Math.random() * 18) + "px";
+      bit.style.animationDelay = Math.random() * .8 + "s";
+      document.body.appendChild(bit);
+      setTimeout(() => bit.remove(), 4000);
+    }
+  }
+
+  renderQuestion();
+</script>
+</body>
+</html>
